@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:catalog/pages/home_page_details.dart';
 import 'package:catalog/widgets/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:catalog/models/catalog.dart';
@@ -43,7 +44,7 @@ class _HomePageState extends State<HomePage> {
               if (CatalogModel.items != null && CatalogModel.items.isNotEmpty)
                 CatalogList().expand()
               else
-                Center(child: CircularProgressIndicator()),
+                CircularProgressIndicator().centered().expand(),
             ],
           ),
         ),
@@ -61,7 +62,15 @@ class CatalogList extends StatelessWidget {
       shrinkWrap: true,
       itemBuilder: (context, index) {
         final catalog = CatalogModel.items[index];
-        return CatalogItem(catalog: catalog);
+        return InkWell(
+          onTap: (() {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => HomeDetailPage(catalog: catalog)));
+          }),
+          child: CatalogItem(catalog: catalog),
+        );
       },
       itemCount: CatalogModel.items.length,
     );
@@ -79,7 +88,14 @@ class CatalogItem extends StatelessWidget {
     return VxBox(
       child: Row(
         children: [
-          Image.network(catalog.image).box.p8.make().p16().w40(context),
+          Hero(
+              tag: Key(catalog.id.toString()),
+              child: Image.network(catalog.image)
+                  .box
+                  .p8
+                  .make()
+                  .p16()
+                  .w40(context)),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
