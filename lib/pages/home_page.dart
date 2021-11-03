@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'package:catalog/pages/cart_page.dart';
 import 'package:catalog/pages/home_page_details.dart';
 import 'package:catalog/widgets/drawer.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:catalog/models/catalog.dart';
 import 'package:catalog/widgets/item.dart';
@@ -33,13 +35,27 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: context.canvasColor,
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: context.theme.buttonColor,
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => CartPage()));
+        },
+        child: Icon(CupertinoIcons.cart),
+      ),
       body: SafeArea(
         child: Container(
           padding: Vx.m32,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              "Catalog App".text.xl5.bold.make(),
+              "Catalog App"
+                  .text
+                  .xl5
+                  .bold
+                  .color(context.theme.buttonColor)
+                  .make(),
               "Best Products".text.xl2.make(),
               if (CatalogModel.items != null && CatalogModel.items.isNotEmpty)
                 CatalogList().expand()
@@ -93,6 +109,7 @@ class CatalogItem extends StatelessWidget {
               child: Image.network(catalog.image)
                   .box
                   .p8
+                  .color(context.canvasColor)
                   .make()
                   .p16()
                   .w40(context)),
@@ -101,21 +118,15 @@ class CatalogItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                catalog.name.text.xl2.bold.make(),
+                catalog.name.text.xl2.color(context.accentColor).bold.make(),
                 catalog.desc.text.make(),
                 10.heightBox,
                 ButtonBar(
                   alignment: MainAxisAlignment.spaceBetween,
                   buttonPadding: EdgeInsets.zero,
                   children: [
-                    "\$${catalog.price}".text.xl.bold.make(),
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.all(StadiumBorder()),
-                      ),
-                      child: "Buy".text.make(),
-                    ),
+                    "\$${catalog.price}".text.xl2.bold.make(),
+                    Icon(Icons.arrow_right_alt_sharp),
                   ],
                 ).pOnly(right: (12.0)),
               ],
@@ -123,6 +134,6 @@ class CatalogItem extends StatelessWidget {
           ),
         ],
       ),
-    ).white.roundedSM.square(150).make().py16();
+    ).color(context.cardColor).rounded.square(150).make().py16();
   }
 }
