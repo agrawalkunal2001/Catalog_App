@@ -1,3 +1,4 @@
+import 'package:catalog/core/store.dart';
 import 'package:catalog/models/cart.dart';
 import 'package:catalog/models/catalog.dart';
 import 'package:flutter/material.dart';
@@ -72,32 +73,26 @@ class HomeDetailPage extends StatelessWidget {
   }
 }
 
-class _AddToCart extends StatefulWidget {
+class _AddToCart extends StatelessWidget {
   final Item catalog;
-  const _AddToCart({Key? key, required this.catalog}) : super(key: key);
+  _AddToCart({Key? key, required this.catalog}) : super(key: key);
 
-  @override
-  State<_AddToCart> createState() => _AddToCartState();
-}
-
-class _AddToCartState extends State<_AddToCart> {
-  bool isAdded = false;
   @override
   Widget build(BuildContext context) {
+    VxState.watch(context, on: [AddMutation]);
+    final CartModel _cart = (VxState.store as MyStore).cart;
+    bool isInCart = _cart.items.contains(catalog);
     return ElevatedButton(
       onPressed: () {
-        isAdded = isAdded.toggle();
-        final _catalog = CatalogModel();
-        final _cart = CartModel();
-        _cart.catalog = _catalog;
-        _cart.addItem(widget.catalog);
-        setState(() {});
+        if (!isInCart) {
+          AddMutation(catalog);
+        }
       },
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all(context.theme.buttonColor),
         shape: MaterialStateProperty.all(StadiumBorder()),
       ),
-      child: isAdded ? Icon(Icons.done) : "Add to Cart".text.make(),
+      child: isInCart ? Icon(Icons.done) : "Add to Cart".text.make(),
     );
   }
 }
