@@ -24,15 +24,15 @@ class CartModel {
   num get totalPrice =>
       items.fold(0, (total, current) => total + current.price);
 
-  // Add item
-  void addItem(Item item) {
-    _itemId.add(item.id);
-  }
+  // // Add item
+  // void addItem(Item item) {
+  //   _itemId.add(item.id);
+  // }
 
-  // Remove item
-  void removeItem(Item item) {
-    _itemId.remove(item.id);
-  }
+  // // Remove item
+  // void removeItem(Item item) {
+  //   _itemId.remove(item.id);
+  // }
 }
 
 class AddMutation extends VxMutation<MyStore> {
@@ -43,5 +43,16 @@ class AddMutation extends VxMutation<MyStore> {
   @override
   perform() {
     store?.cart._itemId.add(item.id);
+  }
+}
+
+class RemoveMutation extends VxMutation<MyStore> {
+  final Item item;
+
+  RemoveMutation(this.item);
+
+  @override
+  perform() {
+    store?.cart._itemId.remove(item.id);
   }
 }
