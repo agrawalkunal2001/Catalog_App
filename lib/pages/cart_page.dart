@@ -28,6 +28,7 @@ class CartPage extends StatelessWidget {
 class _CartTotal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    VxState.watch(context, on: [RemoveMutation]);
     final CartModel _cart = (VxState.store as MyStore).cart;
     return SizedBox(
       height: 200,
@@ -61,17 +62,18 @@ class _CartTotal extends StatelessWidget {
 class _CartList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    VxState.watch(context, on: [RemoveMutation]);
     final CartModel _cart = (VxState.store as MyStore).cart;
     return _cart.items.isEmpty
         ? "Your cart is empty!".text.xl3.make()
         : ListView.builder(
-            itemCount: _cart.items?.length,
+            itemCount: _cart.items.length,
             itemBuilder: (context, index) => ListTile(
               leading: Icon(Icons.done),
               trailing: IconButton(
                 icon: Icon(Icons.remove_circle_outline),
                 onPressed: () {
-                  _cart.removeItem(_cart.items[index]);
+                  RemoveMutation(_cart.items[index]);
                 },
               ),
               title: _cart.items[index].name.text.make(),
