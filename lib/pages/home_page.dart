@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'package:catalog/pages/cart_page.dart';
 import 'package:catalog/pages/home_page_details.dart';
-import 'package:catalog/widgets/drawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:catalog/models/catalog.dart';
-import 'package:catalog/widgets/item.dart';
 import 'package:flutter/services.dart';
 import 'package:velocity_x/velocity_x.dart';
 
